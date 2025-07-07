@@ -14,8 +14,18 @@
   "{{firefox}}.browser_action": {
     "default_popup": "src/popup.html"
   },
+  "permissions": [
+    "storage"
+  ],
   "background": {
     "{{chrome}}.service_worker": "src/background.js",
     "{{firefox}}.scripts": ["src/background.js"]
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.jsx"],
+      "run_at": "document_idle"
+    }
+  ]
 }
