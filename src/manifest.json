@@ -27,5 +27,11 @@
       "js": ["src/content.jsx"],
       "run_at": "document_idle"
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/*"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }

@@ -1258,20 +1258,20 @@ export default function TTSPanel({ settings, updateSetting, ttsState, onTtsContr
       >
         <h3 className="font-medium text-neutral-800 mb-4">Text Input</h3>
         
-        <textarea
-          value={currentText}
-          onChange={handleTextInput}
+          <textarea
+            value={currentText}
+            onChange={handleTextInput}
           placeholder="Enter text to read aloud or select text on the page..."
-          className="w-full p-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+            className="w-full p-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
           rows="3"
-        />
-        
-        <button
-          onClick={handleUseSelectedText}
+          />
+          
+            <button
+              onClick={handleUseSelectedText}
           className="mt-2 w-full bg-neutral-100 text-neutral-700 py-2 px-4 rounded-lg hover:bg-neutral-200 transition-colors"
-        >
-          Use Selected Text
-        </button>
+            >
+              Use Selected Text
+            </button>
       </motion.div>
     </div>
   );
