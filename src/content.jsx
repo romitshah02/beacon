@@ -867,13 +867,24 @@ function OverlayMenu() {
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
               <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Choose Dyslexia-Friendly Font</h4>
-              {Object.keys(dyslexiaFonts).map(font => (
-                <div key={font} style={{marginBottom: 14}}>
-                  <button style={{...btnStyle, background: dyslexia === font ? "#007bff" : "#f5f5f5", color: dyslexia === font ? "white" : "#222", fontSize: 15, fontWeight: 600}} onClick={() => handleFontPick(font)}>{dyslexia === font ? "✓ " : ""}{font}</button>
-                  <div style={{fontSize: 13, color: "#555", marginTop: 2}}>{dyslexiaFontDescriptions[font]}</div>
-                  <div style={{fontFamily: font === "Verdana" ? "Verdana, Arial, sans-serif" : font === "LexieReadable" ? "'LexieReadable', Arial, sans-serif" : font, fontSize: 15, background: "#f8f8f8", padding: 5, borderRadius: 5, marginTop: 2}}>{dyslexiaFontPreviews[font]}</div>
-                </div>
-              ))}
+              <div style={{
+                maxHeight: 200,
+                overflowY: 'auto',
+                marginBottom: 16,
+                paddingRight: 4,
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#e0d7c3 #f7f5f0'
+              }}
+                className="beacon-scrollable-content"
+              >
+                {Object.keys(dyslexiaFonts).map(font => (
+                  <div key={font} style={{marginBottom: 14}}>
+                    <button style={{...btnStyle, background: dyslexia === font ? "#007bff" : "#f5f5f5", color: dyslexia === font ? "white" : "#222", fontSize: 15, fontWeight: 600}} onClick={() => handleFontPick(font)}>{dyslexia === font ? "✓ " : ""}{font}</button>
+                    <div style={{fontSize: 13, color: "#555", marginTop: 2}}>{dyslexiaFontDescriptions[font]}</div>
+                    <div style={{fontFamily: font === "Verdana" ? "Verdana, Arial, sans-serif" : font === "LexieReadable" ? "'LexieReadable', Arial, sans-serif" : font, fontSize: 15, background: "#f8f8f8", padding: 5, borderRadius: 5, marginTop: 2}}>{dyslexiaFontPreviews[font]}</div>
+                  </div>
+                ))}
+              </div>
               <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeFontModal}>Close</button>
             </div>
           </div>
@@ -896,21 +907,32 @@ function OverlayMenu() {
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
               <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Translate Selection</h4>
-              {[
-                {code: "en", label: "English"},
-                {code: "es", label: "Spanish"},
-                {code: "fr", label: "French"},
-                {code: "de", label: "German"},
-                {code: "hi", label: "Hindi"},
-                {code: "ml", label: "Malayalam"},
-                {code: "zh-CN", label: "Chinese"},
-                {code: "ar", label: "Arabic"},
-                {code: "ru", label: "Russian"},
-                {code: "ja", label: "Japanese"},
-                {code: "ko", label: "Korean"}
-              ].map(lang => (
-                <button key={lang.code} style={{...btnStyle, marginBottom: 8, fontWeight: 500}} onClick={() => handleTranslatePick(lang.code)}>{lang.label}</button>
-              ))}
+              <div style={{
+                maxHeight: 200,
+                overflowY: 'auto',
+                marginBottom: 16,
+                paddingRight: 4,
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#e0d7c3 #f7f5f0'
+              }}
+                className="beacon-scrollable-content"
+              >
+                {[
+                  {code: "en", label: "English"},
+                  {code: "es", label: "Spanish"},
+                  {code: "fr", label: "French"},
+                  {code: "de", label: "German"},
+                  {code: "hi", label: "Hindi"},
+                  {code: "ml", label: "Malayalam"},
+                  {code: "zh-CN", label: "Chinese"},
+                  {code: "ar", label: "Arabic"},
+                  {code: "ru", label: "Russian"},
+                  {code: "ja", label: "Japanese"},
+                  {code: "ko", label: "Korean"}
+                ].map(lang => (
+                  <button key={lang.code} style={{...btnStyle, marginBottom: 8, fontWeight: 500}} onClick={() => handleTranslatePick(lang.code)}>{lang.label}</button>
+                ))}
+              </div>
               <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeTranslateModal}>Close</button>
             </div>
           </div>
