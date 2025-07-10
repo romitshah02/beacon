@@ -901,8 +901,38 @@ function OverlayMenu() {
         </div>
         <div style={{height: 1, background: "#f0f0f0", margin: "18px 0 22px 0", borderRadius: 1}} />
 
-        {/* Translation Picker */}
-        <button style={{...btnStyle, fontWeight: 600, fontSize: 16, marginBottom: 16, opacity: selectedText ? 1 : 0.5, cursor: selectedText ? "pointer" : "not-allowed"}} onClick={selectedText ? handleTranslateModal : undefined} disabled={!selectedText}>Translation</button>
+        {/* Translation & Simplify Buttons */}
+        <div style={{display: 'flex', gap: 12, marginBottom: 16}}>
+          <button
+            style={{
+              ...btnStyle,
+              fontWeight: 600,
+              fontSize: 16,
+              opacity: selectedText ? 1 : 0.5,
+              cursor: selectedText ? 'pointer' : 'not-allowed',
+              flex: 1
+            }}
+            onClick={selectedText ? handleTranslateModal : undefined}
+            disabled={!selectedText}
+          >
+            Translation
+          </button>
+          <button
+            style={{
+              ...btnStyle,
+              fontWeight: 600,
+              fontSize: 16,
+              opacity: selectedText ? 1 : 0.5,
+              cursor: selectedText ? 'pointer' : 'not-allowed',
+              flex: 1,
+              background: '#e0f7fa'
+            }}
+            onClick={selectedText ? () => alert('Simplify clicked!') : undefined}
+            disabled={!selectedText}
+          >
+            Simplify
+          </button>
+        </div>
         {showTranslateModal && (
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
@@ -960,23 +990,34 @@ function OverlayMenu() {
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
               <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Layout & Font Options</h4>
-              <div style={{marginBottom: 16}}>
-                <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Font Size:</div>
-                {["16px", "18px", "20px", "24px"].map(size => (
-                  <button key={size} style={{...btnStyle, background: largeFont === size ? "#007bff" : "#f5f5f5", color: largeFont === size ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleLargeFont(size)}>{largeFont === size ? "✓ " : ""}{size}</button>
-                ))}
-              </div>
-              <div style={{marginBottom: 16}}>
-                <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Layout Width:</div>
-                {["800px", "1000px", "1200px"].map(width => (
-                  <button key={width} style={{...btnStyle, background: narrowLayout === width ? "#007bff" : "#f5f5f5", color: narrowLayout === width ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleNarrowLayout(width)}>{narrowLayout === width ? "✓ " : ""}{width}</button>
-                ))}
-              </div>
-              <div style={{marginBottom: 16}}>
-                <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Line Height:</div>
-                <button style={{...btnStyle, fontWeight: 600}} onClick={() => handleLineHeight(-0.1)}>-</button>
-                <span style={{margin: "0 12px", fontWeight: 600, fontSize: 15}}>{lineHeight.toFixed(2)}</span>
-                <button style={{...btnStyle, fontWeight: 600}} onClick={() => handleLineHeight(0.1)}>+</button>
+              <div style={{
+                maxHeight: 250,
+                overflowY: 'auto',
+                marginBottom: 16,
+                paddingRight: 4,
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#e0d7c3 #f7f5f0'
+              }}
+                className="beacon-scrollable-content"
+              >
+                <div style={{marginBottom: 16}}>
+                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Font Size:</div>
+                  {["16px", "18px", "20px", "24px"].map(size => (
+                    <button key={size} style={{...btnStyle, background: largeFont === size ? "#007bff" : "#f5f5f5", color: largeFont === size ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleLargeFont(size)}>{largeFont === size ? "✓ " : ""}{size}</button>
+                  ))}
+                </div>
+                <div style={{marginBottom: 16}}>
+                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Layout Width:</div>
+                  {["800px", "1000px", "1200px"].map(width => (
+                    <button key={width} style={{...btnStyle, background: narrowLayout === width ? "#007bff" : "#f5f5f5", color: narrowLayout === width ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleNarrowLayout(width)}>{narrowLayout === width ? "✓ " : ""}{width}</button>
+                  ))}
+                </div>
+                <div style={{marginBottom: 16}}>
+                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Line Height:</div>
+                  <button style={{...btnStyle, fontWeight: 600}} onClick={() => handleLineHeight(-0.1)}>-</button>
+                  <span style={{margin: "0 12px", fontWeight: 600, fontSize: 15}}>{lineHeight.toFixed(2)}</span>
+                  <button style={{...btnStyle, fontWeight: 600}} onClick={() => handleLineHeight(0.1)}>+</button>
+                </div>
               </div>
               <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeLayoutModal}>Close</button>
             </div>
