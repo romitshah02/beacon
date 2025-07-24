@@ -729,6 +729,45 @@ function OverlayMenu() {
       });
   };
 
+  //Simplification API
+  const handleSimplify = async () => {
+    // 1. Check if any text is selected
+    if (!selectedText) {
+      alert("Please select some text to simplify.");
+      return;
+    }
+
+    try {
+      // 2. Send the selected text to the Flask server
+      const response = await fetch("https://localhost:8000/api/simplify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: selectedText }),
+      });
+      
+      // 3. Handle the server's response
+      if (!response.ok) {
+        throw new Error("Failed to get a response from the server.");
+      }
+
+      const data = await response.json();
+
+      if (data.simplified_text) {
+        // If successful, show the simplified text
+        alert("Simplified Text:\n\n" + data.simplified_text);
+      } else {
+        throw new Error("Invalid response from the server.");
+      }
+
+    } catch (error) {
+      // 4. Handle any errors, like the server being offline
+      console.error("Simplification error:", error);
+      alert("Could not simplify the text. Please make sure the Python server is running.");
+    }
+  };
+
   if (isMinimized) {
     return (
       <div style={{
@@ -917,7 +956,7 @@ function OverlayMenu() {
           >
             Translation
           </button>
-          <button
+      <button
             style={{
               ...btnStyle,
               fontWeight: 600,
@@ -927,7 +966,7 @@ function OverlayMenu() {
               flex: 1,
               background: '#e0f7fa'
             }}
-            onClick={selectedText ? () => alert('Simplify clicked!') : undefined}
+            onClick={handleSimplify} 
             disabled={!selectedText}
           >
             Simplify
