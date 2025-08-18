@@ -1,6 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
+let root = null; // Keep a reference to the React root
+
+// Wrap UI creation in a function
+function toggleOverlay() {
+  const existingRoot = document.getElementById("beacon-overlay-root");
+
+  if (existingRoot) {
+    // If the UI exists, unmount and remove it
+    root.unmount();
+    existingRoot.remove();
+    root = null; // Clear the reference
+  } else {
+    // If the UI doesn't exist, create and inject it
+    const container = document.createElement("div");
+    container.id = "beacon-overlay-root";
+    // ... (keep all your existing container.style lines here) ...
+    container.style.position = "fixed";
+    container.style.top = "80px";
+    container.style.right = "40px";
+    container.style.zIndex = 999999;
+    container.style.background = "rgba(255, 255, 255, 0.95)";
+    container.style.borderRadius = "16px";
+    container.style.boxShadow = "0 4px 24px rgba(0,0,0,0.12)";
+    container.style.padding = "16px";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.gap = "12px";
+    container.style.minWidth = "200px";
+    container.style.fontFamily = "inherit";
+    
+    document.body.appendChild(container);
+    root = createRoot(container); // Create a new React root
+    root.render(<OverlayMenu />); // Render the component
+  }
+}
+
 // Add custom scrollbar styles
 const scrollbarStyles = document.createElement("style");
 scrollbarStyles.textContent = `
@@ -595,6 +631,7 @@ function OverlayMenu() {
   const [showSaveHighlight, setShowSaveHighlight] = useState(false);
   const [translationResult, setTranslationResult] = useState("");
   const [hasUnsavedHighlight, setHasUnsavedHighlight] = useState(false);
+  const [isSimplifying, setIsSimplifying] = useState(false);
 
   // Listen for selection changes
   useEffect(() => {
@@ -729,6 +766,53 @@ function OverlayMenu() {
       });
   };
 
+  //Simplification API
+const handleSimplify = async () => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) {
+      alert("Please select some text to simplify.");
+      return;
+    }
+
+    const originalText = selection.toString();
+    const range = selection.getRangeAt(0);
+
+    setIsSimplifying(true); 
+
+    try {
+      const response = await fetch("https://localhost:8000/api/simplify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: originalText }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Server responded with an error.");
+      }
+
+      const data = await response.json();
+      const simplifiedText = data.simplified_text;
+
+      if (simplifiedText) {
+        range.deleteContents(); 
+        const replacementSpan = document.createElement("span");
+        replacementSpan.textContent = simplifiedText;
+        replacementSpan.style.backgroundColor = "#C3F6FCFF";
+        replacementSpan.style.borderRadius = "3px";
+        replacementSpan.style.padding = "0 2px";
+        range.insertNode(replacementSpan);
+      } else {
+        throw new Error("Invalid response from the server.");
+      }
+    } catch (error) {
+      console.error("Simplification error:", error);
+      alert("Could not simplify the text. Please make sure the Python server is running.");
+    } finally {
+        setIsSimplifying(false); 
+        selection.removeAllRanges();
+    }
+  };
+
   if (isMinimized) {
     return (
       <div style={{
@@ -799,24 +883,7 @@ function OverlayMenu() {
           >
             –
           </button>
-          <button
-            style={{
-              background: "none",
-              border: "none",
-              fontSize: 22,
-              cursor: "pointer",
-              color: "#b0b0b0",
-              padding: 2,
-              borderRadius: 4,
-              transition: "background 0.2s"
-            }}
-            title="Close"
-            onClick={() => {
-              document.getElementById("beacon-overlay-root").remove();
-            }}
-          >
-            ×
-          </button>
+  
         </div>
       </div>
 
@@ -917,7 +984,7 @@ function OverlayMenu() {
           >
             Translation
           </button>
-          <button
+      <button
             style={{
               ...btnStyle,
               fontWeight: 600,
@@ -927,10 +994,10 @@ function OverlayMenu() {
               flex: 1,
               background: '#e0f7fa'
             }}
-            onClick={selectedText ? () => alert('Simplify clicked!') : undefined}
+             onClick={!isSimplifying ? handleSimplify : undefined} 
             disabled={!selectedText}
           >
-            Simplify
+            {isSimplifying ? 'Simplifying...' : 'Simplify'}
           </button>
         </div>
         {showTranslateModal && (
@@ -1051,7 +1118,12 @@ const btnStyle = {
 createRoot(container).render(<OverlayMenu />);
 
 // Listen for messages from the popup
-if (window.chrome && chrome.runtime && chrome.runtime.onMessage) {
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'TOGGLE_OVERLAY') {
+    toggleOverlay();
+  }
+ if (window.chrome && chrome.runtime && chrome.runtime.onMessage) {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'HIGHLIGHT_SELECTION') {
       highlightSelection(message.color);
@@ -1065,3 +1137,5 @@ if (window.chrome && chrome.runtime && chrome.runtime.onMessage) {
     }
   });
 }
+});
+

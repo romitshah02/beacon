@@ -15,7 +15,13 @@
     "default_popup": "src/popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://localhost:8000/",
+    "https://127.0.0.1:8000/"
   ],
   "background": {
     "{{chrome}}.service_worker": "src/background.js",
