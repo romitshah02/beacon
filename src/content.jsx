@@ -580,23 +580,220 @@ function disableTextSpacing() {
   document.body.style.lineHeight = "";
 }
 
-// Color Themes
-function enableColorTheme(theme) {
-  if (theme === "sepia") {
-    document.body.style.background = "#f4ecd8";
-    document.body.style.color = "#5b4636";
-  } else if (theme === "dark") {
-    document.body.style.background = "#181a1b";
-    document.body.style.color = "#f5f6fa";
-  } else if (theme === "high-contrast") {
-    document.body.style.background = "#fff";
-    document.body.style.color = "#000";
+  // Color Themes
+  function enableColorTheme(theme) {
+    if (theme === "sepia") {
+      document.body.style.background = "#f4ecd8";
+      document.body.style.color = "#5b4636";
+      // Update extension UI for sepia theme
+      updateExtensionTheme('sepia');
+    } else if (theme === "dark") {
+      document.body.style.background = "#181a1b";
+      document.body.style.color = "#f5f6fa";
+      // Update extension UI for dark theme
+      updateExtensionTheme('dark');
+    } else if (theme === "high-contrast") {
+      document.body.style.background = "#fff";
+      document.body.style.color = "#000";
+      // Update extension UI for high-contrast theme
+      updateExtensionTheme('high-contrast');
+    }
   }
-}
-function disableColorTheme() {
-  document.body.style.background = "";
-  document.body.style.color = "";
-}
+  
+  function disableColorTheme() {
+    document.body.style.background = "";
+    document.body.style.color = "";
+    // Reset extension UI to default theme
+    updateExtensionTheme('default');
+  }
+  
+  // Function to update extension UI theme
+  function updateExtensionTheme(theme) {
+    const overlay = document.getElementById('beacon-overlay-root');
+    if (!overlay) return;
+    
+    const overlayContent = overlay.querySelector('div');
+    if (!overlayContent) return;
+    
+    if (theme === 'dark') {
+      overlayContent.style.background = '#2d2d2d';
+      overlayContent.style.color = '#f5f6fa';
+      overlayContent.style.border = '1px solid #444';
+      
+      // Update header background and text color
+      const header = overlayContent.querySelector('div');
+      if (header) {
+        header.style.background = '#1a1a1a';
+        header.style.borderBottom = '1px solid #444';
+        header.style.color = '#f5f6fa';
+      }
+      
+      // Update scrollable content background
+      const scrollableContent = overlayContent.querySelector('.beacon-scrollable-content');
+      if (scrollableContent) {
+        scrollableContent.style.background = '#2d2d2d';
+        scrollableContent.style.color = '#f5f6fa';
+      }
+      
+      // Update dividers
+      const dividers = overlayContent.querySelectorAll('div[style*="background: #f0f0f0"]');
+      dividers.forEach(divider => {
+        divider.style.background = '#444';
+      });
+      
+      // Update all text elements for dark theme
+      const textElements = overlayContent.querySelectorAll('div, span, h4, h5');
+      textElements.forEach(element => {
+        if (element.style.color === '' || element.style.color === 'rgb(35, 35, 35)' || element.style.color === '#232323') {
+          element.style.color = '#f5f6fa';
+        }
+      });
+      
+      // Update buttons for dark theme
+      const buttons = overlayContent.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (!button.style.background || button.style.background === 'rgb(245, 245, 245)' || button.style.background === '#f5f5f5') {
+          button.style.background = '#444';
+          button.style.color = '#f5f6fa';
+          button.style.border = '1px solid #666';
+        }
+      });
+      
+    } else if (theme === 'sepia') {
+      overlayContent.style.background = '#f4ecd8';
+      overlayContent.style.color = '#5b4636';
+      overlayContent.style.border = '1px solid #d4c4a8';
+      
+      // Update header background
+      const header = overlayContent.querySelector('div');
+      if (header) {
+        header.style.background = '#e8dcc0';
+        header.style.borderBottom = '1px solid #d4c4a8';
+        header.style.color = '#5b4636';
+      }
+      
+      // Update scrollable content background
+      const scrollableContent = overlayContent.querySelector('.beacon-scrollable-content');
+      if (scrollableContent) {
+        scrollableContent.style.background = '#f4ecd8';
+        scrollableContent.style.color = '#5b4636';
+      }
+      
+      // Update dividers
+      const dividers = overlayContent.querySelectorAll('div[style*="background: #f0f0f0"]');
+      dividers.forEach(divider => {
+        divider.style.background = '#d4c4a8';
+      });
+      
+      // Update all text elements for sepia theme
+      const textElements = overlayContent.querySelectorAll('div, span, h4, h5');
+      textElements.forEach(element => {
+        if (element.style.color === '' || element.style.color === 'rgb(35, 35, 35)' || element.style.color === '#232323') {
+          element.style.color = '#5b4636';
+        }
+      });
+      
+      // Update buttons for sepia theme
+      const buttons = overlayContent.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (!button.style.background || button.style.background === 'rgb(245, 245, 245)' || button.style.background === '#f5f5f5') {
+          button.style.background = '#e8dcc0';
+          button.style.color = '#5b4636';
+          button.style.border = '1px solid #d4c4a8';
+        }
+      });
+      
+    } else if (theme === 'high-contrast') {
+      overlayContent.style.background = '#fff';
+      overlayContent.style.color = '#000';
+      overlayContent.style.border = '2px solid #000';
+      
+      // Update header background
+      const header = overlayContent.querySelector('div');
+      if (header) {
+        header.style.background = '#000';
+        header.style.color = '#fff';
+        header.style.borderBottom = '2px solid #000';
+      }
+      
+      // Update scrollable content background
+      const scrollableContent = overlayContent.querySelector('.beacon-scrollable-content');
+      if (scrollableContent) {
+        scrollableContent.style.background = '#fff';
+        scrollableContent.style.color = '#000';
+      }
+      
+      // Update dividers
+      const dividers = overlayContent.querySelectorAll('div[style*="background: #f0f0f0"]');
+      dividers.forEach(divider => {
+        divider.style.background = '#000';
+      });
+      
+      // Update all text elements for high-contrast theme
+      const textElements = overlayContent.querySelectorAll('div, span, h4, h5');
+      textElements.forEach(element => {
+        if (element.style.color === '' || element.style.color === 'rgb(35, 35, 35)' || element.style.color === '#232323') {
+          element.style.color = '#000';
+        }
+      });
+      
+      // Update buttons for high-contrast theme
+      const buttons = overlayContent.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (!button.style.background || button.style.background === 'rgb(245, 245, 245)' || button.style.background === '#f5f5f5') {
+          button.style.background = '#000';
+          button.style.color = '#fff';
+          button.style.border = '2px solid #000';
+        }
+      });
+      
+    } else {
+      // Default theme
+      overlayContent.style.background = '#fcfcfc';
+      overlayContent.style.color = '#232323';
+      overlayContent.style.border = '1px solid #ececec';
+      
+      // Update header background
+      const header = overlayContent.querySelector('div');
+      if (header) {
+        header.style.background = '#fff';
+        header.style.color = '#232323';
+        header.style.borderBottom = '1px solid #f0f0f0';
+      }
+      
+      // Update scrollable content background
+      const scrollableContent = overlayContent.querySelector('.beacon-scrollable-content');
+      if (scrollableContent) {
+        scrollableContent.style.background = '#fcfcfc';
+        scrollableContent.style.color = '#232323';
+      }
+      
+      // Update dividers
+      const dividers = overlayContent.querySelectorAll('div[style*="background: #444"], div[style*="background: #d4c4a8"], div[style*="background: #000"]');
+      dividers.forEach(divider => {
+        divider.style.background = '#f0f0f0';
+      });
+      
+      // Reset all text elements to default theme
+      const textElements = overlayContent.querySelectorAll('div, span, h4, h5');
+      textElements.forEach(element => {
+        if (element.style.color === 'rgb(245, 246, 250)' || element.style.color === '#f5f6fa' || 
+            element.style.color === 'rgb(91, 70, 54)' || element.style.color === '#5b4636') {
+          element.style.color = '#232323';
+        }
+      });
+      
+      // Reset buttons to default theme
+      const buttons = overlayContent.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (button.style.background === '#444' || button.style.background === '#e8dcc0' || button.style.background === '#000') {
+          button.style.background = '#f5f5f5';
+          button.style.color = '#232323';
+          button.style.border = 'none';
+        }
+      });
+    }
+  }
 
 // Text-to-Speech
 let speechSynthesis = window.speechSynthesis;
@@ -659,6 +856,9 @@ function OverlayMenu() {
   const [vocabularyBuilder, setVocabularyBuilder] = useState(false);
   const [vocabularyHistory, setVocabularyHistory] = useState([]);
   const [showVocabHistory, setShowVocabHistory] = useState(false);
+  
+  // Get current button style based on theme
+  const currentBtnStyle = getBtnStyle(theme);
 
   // Listen for selection changes
   useEffect(() => {
@@ -669,6 +869,15 @@ function OverlayMenu() {
     document.addEventListener('selectionchange', handleSelectionChange);
     return () => document.removeEventListener('selectionchange', handleSelectionChange);
   }, []);
+  
+  // Update extension theme when theme changes
+  useEffect(() => {
+    if (theme) {
+      updateExtensionTheme(theme);
+    } else {
+      updateExtensionTheme('default');
+    }
+  }, [theme]);
 
   // Define the hover handlers for reuse
   const handleImageHover = (event) => {
@@ -984,6 +1193,14 @@ function OverlayMenu() {
       enableColorTheme(t);
       setTheme(t);
     }
+    // Force update of extension theme
+    setTimeout(() => {
+      if (t) {
+        updateExtensionTheme(t);
+      } else {
+        updateExtensionTheme('default');
+      }
+    }, 100);
   };
   
   const handleLargeFont = (size) => {
@@ -1783,7 +2000,7 @@ const handleSimplify = async () => {
         background: "#fff",
         flexShrink: 0
       }}>
-        <span style={{fontWeight: 800, fontSize: 22, letterSpacing: 0.2, color: "#232323"}}>Beacon Tools</span>
+                 <span style={{fontWeight: 800, fontSize: 22, letterSpacing: 0.2, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Beacon Tools</span>
         <div style={{display: "flex", gap: 8}}>
           <button
             style={{
@@ -1818,40 +2035,40 @@ const handleSimplify = async () => {
           background: "#fcfcfc"
         }}
       >
-        {/* Highlight Section with color picker */}
-        <div style={{marginBottom: 22}}>
-          <div style={{fontSize: 15, fontWeight: 600, marginBottom: 8, color: "#232323"}}>Highlight:</div>
-          <div style={{display: "flex", gap: 12, marginBottom: 10}}>
-            {["#ffeb3b", "#ffcdd2", "#c8e6c9", "#bbdefb", "#e1bee7"].map(color => (
-              <button
-                key={color}
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: "50%",
-                  border: highlightColor === color ? "3px solid #bfa14a" : "2px solid #e0e0e0",
-                  background: color,
-                  outline: "none",
-                  boxShadow: highlightColor === color ? "0 0 0 2px #fffbe6" : "none",
-                  cursor: "pointer",
-                  transition: "border 0.2s, box-shadow 0.2s"
-                }}
-                onClick={() => setHighlightColor(color)}
-                title={`Highlight color: ${color}`}
-              />
-            ))}
-          </div>
-          {selectedText && <button style={{...btnStyle, marginTop: 2, marginBottom: 0}} onMouseDown={e => e.preventDefault()} onClick={handleHighlight}>Highlight Selection</button>}
-          {(showSaveHighlight || hasUnsavedHighlight) && <button style={{...btnStyle, background: "#ffe082", color: "#232323", marginTop: 8}} onClick={handleSaveHighlight}>Save Highlight</button>}
-        </div>
-        <div style={{height: 1, background: "#f0f0f0", margin: "18px 0 22px 0", borderRadius: 1}} />
+                 {/* Highlight Section with color picker */}
+         <div style={{marginBottom: 22}}>
+           <div style={{fontSize: 15, fontWeight: 600, marginBottom: 8, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Highlight:</div>
+           <div style={{display: "flex", gap: 12, marginBottom: 10}}>
+             {["#ffeb3b", "#ffcdd2", "#c8e6c9", "#bbdefb", "#e1bee7"].map(color => (
+               <button
+                 key={color}
+                 style={{
+                   width: 28,
+                   height: 28,
+                   borderRadius: "50%",
+                   border: highlightColor === color ? "3px solid #bfa14a" : "2px solid #e0e0e0",
+                   background: color,
+                   outline: "none",
+                   boxShadow: highlightColor === color ? "0 0 0 2px #fffbe6" : "none",
+                   cursor: "pointer",
+                   transition: "border 0.2s, box-shadow 0.2s"
+                 }}
+                 onClick={() => setHighlightColor(color)}
+                 title={`Highlight color: ${color}`}
+               />
+             ))}
+           </div>
+           {selectedText && <button style={{...currentBtnStyle, marginTop: 2, marginBottom: 0}} onMouseDown={e => e.preventDefault()} onClick={handleHighlight}>Highlight Selection</button>}
+           {(showSaveHighlight || hasUnsavedHighlight) && <button style={{...currentBtnStyle, background: "#ffe082", color: "#232323", marginTop: 8}} onClick={handleSaveHighlight}>Save Highlight</button>}
+         </div>
+        <div style={{height: 1, background: theme === 'dark' ? '#444' : theme === 'sepia' ? '#d4c4a8' : '#f0f0f0', margin: "18px 0 22px 0", borderRadius: 1}} />
 
         {/* Dyslexia Font Picker */}
-        <button style={{...btnStyle, fontWeight: 600, fontSize: 16, marginBottom: 16}} onClick={handleFontModal}>Dyslexia Fonts</button>
+        <button style={{...currentBtnStyle, fontWeight: 600, fontSize: 16, marginBottom: 16}} onClick={handleFontModal}>Dyslexia Fonts</button>
         {showFontModal && (
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
-              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Choose Dyslexia-Friendly Font</h4>
+            <div style={{background: theme === 'dark' ? '#2d2d2d' : theme === 'sepia' ? '#f4ecd8' : '#fff', borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
+              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Choose Dyslexia-Friendly Font</h4>
               <div style={{
                 maxHeight: 200,
                 overflowY: 'auto',
@@ -1864,54 +2081,54 @@ const handleSimplify = async () => {
               >
                 {Object.keys(dyslexiaFonts).map(font => (
                   <div key={font} style={{marginBottom: 14}}>
-                    <button style={{...btnStyle, background: dyslexia === font ? "#007bff" : "#f5f5f5", color: dyslexia === font ? "white" : "#222", fontSize: 15, fontWeight: 600}} onClick={() => handleFontPick(font)}>{dyslexia === font ? "✓ " : ""}{font}</button>
-                    <div style={{fontSize: 13, color: "#555", marginTop: 2}}>{dyslexiaFontDescriptions[font]}</div>
-                    <div style={{fontFamily: font === "Verdana" ? "Verdana, Arial, sans-serif" : font === "LexieReadable" ? "'LexieReadable', Arial, sans-serif" : font, fontSize: 15, background: "#f8f8f8", padding: 5, borderRadius: 5, marginTop: 2}}>{dyslexiaFontPreviews[font]}</div>
+                                         <button style={{...currentBtnStyle, background: dyslexia === font ? "#007bff" : "#f5f5f5", color: dyslexia === font ? "white" : "#222", fontSize: 15, fontWeight: 600}} onClick={() => handleFontPick(font)}>{dyslexia === font ? "✓ " : ""}{font}</button>
+                    <div style={{fontSize: 13, color: theme === 'dark' ? '#b0b0b0' : theme === 'sepia' ? '#8b7355' : '#555', marginTop: 2}}>{dyslexiaFontDescriptions[font]}</div>
+                    <div style={{fontFamily: font === "Verdana" ? "Verdana, Arial, sans-serif" : font === "LexieReadable" ? "'LexieReadable', Arial, sans-serif" : font, fontSize: 15, background: theme === 'dark' ? '#444' : theme === 'sepia' ? '#e8dcc0' : '#f8f8f8', color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323', padding: 5, borderRadius: 5, marginTop: 2}}>{dyslexiaFontPreviews[font]}</div>
                   </div>
                 ))}
               </div>
-              <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeFontModal}>Close</button>
+                             <button style={{...currentBtnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeFontModal}>Close</button>
             </div>
           </div>
         )}
-        <div style={{height: 1, background: "#f0f0f0", margin: "18px 0 22px 0", borderRadius: 1}} />
+        <div style={{height: 1, background: theme === 'dark' ? '#444' : theme === 'sepia' ? '#d4c4a8' : '#f0f0f0', margin: "18px 0 22px 0", borderRadius: 1}} />
 
         {/* Line Focus, Text Spacing, Color Themes */}
         <div style={{display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginBottom: 22}}>
-          <button style={{...btnStyle, fontWeight: 500}} onClick={handleLineFocus}>{lineFocus ? "Disable Line Focus" : "Enable Line Focus"}</button>
-          <button style={{...btnStyle, fontWeight: 500}} onClick={handleSpacing}>{spacing ? "Disable Text Spacing" : "Enable Text Spacing"}</button>
-          <button style={{...btnStyle, background: theme==="sepia"?"#ffe4b5":"#f5f5f5", color: theme==="sepia"?"#bfa14a":"#232323", fontWeight: 500}} onClick={() => handleTheme("sepia")}>Sepia</button>
-          <button style={{...btnStyle, background: theme==="dark"?"#232323":"#f5f5f5", color: theme==="dark"?"#fff":"#232323", fontWeight: 500}} onClick={() => handleTheme("dark")}>Dark</button>
-          <button style={{...btnStyle, background: theme==="high-contrast"?"#fff200":"#f5f5f5", color: theme==="high-contrast"?"#232323":"#232323", fontWeight: 500}} onClick={() => handleTheme("high-contrast")}>Contrast</button>
+                     <button style={{...currentBtnStyle, fontWeight: 500}} onClick={handleLineFocus}>{lineFocus ? "Disable Line Focus" : "Enable Line Focus"}</button>
+           <button style={{...currentBtnStyle, fontWeight: 500}} onClick={handleSpacing}>{spacing ? "Disable Text Spacing" : "Enable Text Spacing"}</button>
+           <button style={{...currentBtnStyle, background: theme==="sepia"?"#ffe4b5":"#f5f5f5", color: theme==="sepia"?"#bfa14a":"#232323", fontWeight: 500}} onClick={() => handleTheme("sepia")}>Sepia</button>
+           <button style={{...currentBtnStyle, background: theme==="dark"?"#232323":"#f5f5f5", color: theme==="dark"?"#fff":"#232323", fontWeight: 500}} onClick={() => handleTheme("dark")}>Dark</button>
+           <button style={{...currentBtnStyle, background: theme==="high-contrast"?"#fff200":"#f5f5f5", color: theme==="high-contrast"?"#232323":"#232323", fontWeight: 500}} onClick={() => handleTheme("high-contrast")}>Contrast</button>
         </div>
-        <div style={{height: 1, background: "#f0f0f0", margin: "18px 0 22px 0", borderRadius: 1}} />
+        <div style={{height: 1, background: theme === 'dark' ? '#444' : theme === 'sepia' ? '#d4c4a8' : '#f0f0f0', margin: "18px 0 22px 0", borderRadius: 1}} />
 
         {/* Translation & Simplify Buttons */}
         <div style={{display: 'flex', gap: 12, marginBottom: 16}}>
           <button
-            style={{
-              ...btnStyle,
-              fontWeight: 600,
-              fontSize: 16,
-              opacity: selectedText ? 1 : 0.5,
-              cursor: selectedText ? 'pointer' : 'not-allowed',
-              flex: 1
-            }}
+                         style={{
+               ...currentBtnStyle,
+               fontWeight: 600,
+               fontSize: 16,
+               opacity: selectedText ? 1 : 0.5,
+               cursor: selectedText ? 'pointer' : 'not-allowed',
+               flex: 1
+             }}
             onClick={selectedText ? handleTranslateModal : undefined}
             disabled={!selectedText}
           >
             Translation
           </button>
-      <button
-            style={{
-              ...btnStyle,
-              fontWeight: 600,
-              fontSize: 16,
-              opacity: selectedText ? 1 : 0.5,
-              cursor: selectedText ? 'pointer' : 'not-allowed',
-              flex: 1,
-              background: '#e0f7fa'
-            }}
+             <button
+             style={{
+               ...currentBtnStyle,
+               fontWeight: 600,
+               fontSize: 16,
+               opacity: selectedText ? 1 : 0.5,
+               cursor: selectedText ? 'pointer' : 'not-allowed',
+               flex: 1,
+               background: '#e0f7fa'
+             }}
              onClick={!isSimplifying ? handleSimplify : undefined} 
             disabled={!selectedText}
           >
@@ -1920,16 +2137,16 @@ const handleSimplify = async () => {
         </div>
 
         {/* Image Explanation Button */}
-        <button
-          style={{
-            ...btnStyle,
-            fontWeight: 600,
-            fontSize: 16,
-            background: '#f3e5f5',
-            color: '#4a148c',
-            marginBottom: 16,
-            position: 'relative'
-          }}
+                 <button
+           style={{
+             ...currentBtnStyle,
+             fontWeight: 600,
+             fontSize: 16,
+             background: '#f3e5f5',
+             color: '#4a148c',
+             marginBottom: 16,
+             position: 'relative'
+           }}
           onClick={analyzeImage}
           disabled={false}
         >
@@ -1939,65 +2156,65 @@ const handleSimplify = async () => {
 
         {/* Bionic Reading & Vocabulary Builder */}
         <div style={{display: 'flex', gap: 12, marginBottom: 16}}>
-          <button
-            style={{
-              ...btnStyle,
-              fontWeight: 600,
-              fontSize: 16,
-              background: bionicReading ? '#e8f5e8' : '#fff3e0',
-              color: bionicReading ? '#2e7d32' : '#e65100',
-              flex: 1
-            }}
-            onClick={toggleBionicReading}
-          >
-            {bionicReading ? '✓ ' : ''}🧠 Bionic Reading
-          </button>
-          <button
-            style={{
-              ...btnStyle,
-              fontWeight: 600,
-              fontSize: 16,
-              background: vocabularyBuilder ? '#e8f5e8' : '#e3f2fd',
-              color: vocabularyBuilder ? '#2e7d32' : '#1565c0',
-              flex: 1
-            }}
-            onClick={handleVocabButtonClick}
-          >
-            📚 Vocabulary
-          </button>
+                     <button
+             style={{
+               ...currentBtnStyle,
+               fontWeight: 600,
+               fontSize: 16,
+               background: bionicReading ? '#e8f5e8' : '#fff3e0',
+               color: bionicReading ? '#2e7d32' : '#e65100',
+               flex: 1
+             }}
+             onClick={toggleBionicReading}
+           >
+             {bionicReading ? '✓ ' : ''}🧠 Bionic Reading
+           </button>
+           <button
+             style={{
+               ...currentBtnStyle,
+               fontWeight: 600,
+               fontSize: 16,
+               background: vocabularyBuilder ? '#e8f5e8' : '#e3f2fd',
+               color: vocabularyBuilder ? '#2e7d32' : '#1565c0',
+               flex: 1
+             }}
+             onClick={handleVocabButtonClick}
+           >
+             📚 Vocabulary
+           </button>
         </div>
 
         {/* Vocabulary History Button */}
         {vocabularyHistory.length > 0 && (
-          <button
-            style={{
-              ...btnStyle,
-              fontWeight: 600,
-              fontSize: 16,
-              background: '#fce4ec',
-              color: '#c2185b',
-              marginBottom: 16
-            }}
-            onClick={() => setShowVocabHistory(true)}
-          >
-            📖 Vocabulary History ({vocabularyHistory.length})
-          </button>
+                     <button
+             style={{
+               ...currentBtnStyle,
+               fontWeight: 600,
+               fontSize: 16,
+               background: '#fce4ec',
+               color: '#c2185b',
+               marginBottom: 16
+             }}
+             onClick={() => setShowVocabHistory(true)}
+           >
+             📖 Vocabulary History ({vocabularyHistory.length})
+           </button>
         )}
 
-        <div style={{height: 1, background: "#f0f0f0", margin: "18px 0 22px 0", borderRadius: 1}} />
+        <div style={{height: 1, background: theme === 'dark' ? '#444' : theme === 'sepia' ? '#d4c4a8' : '#f0f0f0', margin: "18px 0 22px 0", borderRadius: 1}} />
 
         {/* TTS, Layout & Font, Saved Highlights */}
         <div style={{display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginBottom: 10}}>
-          <button style={{...btnStyle, fontWeight: 600}} onClick={handleTTS}>{isSpeaking ? "Stop" : "Text-to-Speech"}</button>
-          <button style={{...btnStyle, fontWeight: 600}} onClick={handleLayoutModal}>Layout & Font</button>
-          <button style={{...btnStyle, fontWeight: 600, gridColumn: "span 2"}} onClick={showSavedHighlights}>Saved Highlights</button>
+                     <button style={{...currentBtnStyle, fontWeight: 600}} onClick={handleTTS}>{isSpeaking ? "Stop" : "Text-to-Speech"}</button>
+           <button style={{...currentBtnStyle, fontWeight: 600}} onClick={handleLayoutModal}>Layout & Font</button>
+           <button style={{...currentBtnStyle, fontWeight: 600, gridColumn: "span 2"}} onClick={showSavedHighlights}>Saved Highlights</button>
         </div>
 
         {/* Layout & Font Modal */}
         {showLayoutModal && (
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
-              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Layout & Font Options</h4>
+            <div style={{background: theme === 'dark' ? '#2d2d2d' : theme === 'sepia' ? '#f4ecd8' : '#fff', borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
+              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Layout & Font Options</h4>
               <div style={{
                 maxHeight: 250,
                 overflowY: 'auto',
@@ -2009,25 +2226,25 @@ const handleSimplify = async () => {
                 className="beacon-scrollable-content"
               >
                 <div style={{marginBottom: 16}}>
-                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Font Size:</div>
+                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Font Size:</div>
                   {["16px", "18px", "20px", "24px"].map(size => (
-                    <button key={size} style={{...btnStyle, background: largeFont === size ? "#007bff" : "#f5f5f5", color: largeFont === size ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleLargeFont(size)}>{largeFont === size ? "✓ " : ""}{size}</button>
+                                         <button key={size} style={{...currentBtnStyle, background: largeFont === size ? "#007bff" : "#f5f5f5", color: largeFont === size ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleLargeFont(size)}>{largeFont === size ? "✓ " : ""}{size}</button>
                   ))}
                 </div>
                 <div style={{marginBottom: 16}}>
-                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Layout Width:</div>
-                  {["800px", "1000px", "1200px"].map(width => (
-                    <button key={width} style={{...btnStyle, background: narrowLayout === width ? "#007bff" : "#f5f5f5", color: narrowLayout === width ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleNarrowLayout(width)}>{narrowLayout === width ? "✓ " : ""}{width}</button>
-                  ))}
+                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Layout Width:</div>
+                                     {["800px", "1000px", "1200px"].map(width => (
+                     <button key={width} style={{...currentBtnStyle, background: narrowLayout === width ? "#007bff" : "#f5f5f5", color: narrowLayout === width ? "white" : "#232323", fontSize: 15, fontWeight: 600, marginRight: 8}} onClick={() => handleNarrowLayout(width)}>{narrowLayout === width ? "✓ " : ""}{width}</button>
+                   ))}
                 </div>
-                <div style={{marginBottom: 16}}>
-                  <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6}}>Line Height:</div>
-                  <button style={{...btnStyle, fontWeight: 600}} onClick={() => handleLineHeight(-0.1)}>-</button>
-                  <span style={{margin: "0 12px", fontWeight: 600, fontSize: 15}}>{lineHeight.toFixed(2)}</span>
-                  <button style={{...btnStyle, fontWeight: 600}} onClick={() => handleLineHeight(0.1)}>+</button>
-                </div>
+                                 <div style={{marginBottom: 16}}>
+                   <div style={{fontSize: 15, fontWeight: 600, marginBottom: 6, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Line Height:</div>
+                   <button style={{...currentBtnStyle, fontWeight: 600}} onClick={() => handleLineHeight(-0.1)}>-</button>
+                   <span style={{margin: "0 12px", fontWeight: 600, fontSize: 15, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>{lineHeight.toFixed(2)}</span>
+                   <button style={{...currentBtnStyle, fontWeight: 600}} onClick={() => handleLineHeight(0.1)}>+</button>
+                 </div>
               </div>
-              <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeLayoutModal}>Close</button>
+                             <button style={{...currentBtnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeLayoutModal}>Close</button>
             </div>
           </div>
         )}
@@ -2035,8 +2252,8 @@ const handleSimplify = async () => {
         {/* Translation Modal */}
         {showTranslateModal && (
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000001, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
-              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Translate Selection</h4>
+            <div style={{background: theme === 'dark' ? '#2d2d2d' : theme === 'sepia' ? '#f4ecd8' : '#fff', borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
+              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Translate Selection</h4>
               <div style={{
                 maxHeight: 200,
                 overflowY: 'auto',
@@ -2047,23 +2264,23 @@ const handleSimplify = async () => {
               }}
                 className="beacon-scrollable-content"
               >
-                {[
-                  {code: "en", label: "English"},
-                  {code: "es", label: "Spanish"},
-                  {code: "fr", label: "French"},
-                  {code: "de", label: "German"},
-                  {code: "hi", label: "Hindi"},
-                  {code: "ml", label: "Malayalam"},
-                  {code: "zh-CN", label: "Chinese"},
-                  {code: "ar", label: "Arabic"},
-                  {code: "ru", label: "Russian"},
-                  {code: "ja", label: "Japanese"},
-                  {code: "ko", label: "Korean"}
-                ].map(lang => (
-                  <button key={lang.code} style={{...btnStyle, marginBottom: 8, fontWeight: 500}} onClick={() => handleTranslatePick(lang.code)}>{lang.label}</button>
-                ))}
+                                 {[
+                   {code: "en", label: "English"},
+                   {code: "es", label: "Spanish"},
+                   {code: "fr", label: "French"},
+                   {code: "de", label: "German"},
+                   {code: "hi", label: "Hindi"},
+                   {code: "ml", label: "Malayalam"},
+                   {code: "zh-CN", label: "Chinese"},
+                   {code: "ar", label: "Arabic"},
+                   {code: "ru", label: "Russian"},
+                   {code: "ja", label: "Japanese"},
+                   {code: "ko", label: "Korean"}
+                 ].map(lang => (
+                   <button key={lang.code} style={{...currentBtnStyle, marginBottom: 8, fontWeight: 500}} onClick={() => handleTranslatePick(lang.code)}>{lang.label}</button>
+                 ))}
               </div>
-              <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeTranslateModal}>Close</button>
+                             <button style={{...currentBtnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={closeTranslateModal}>Close</button>
             </div>
           </div>
         )}
@@ -2071,10 +2288,10 @@ const handleSimplify = async () => {
         {/* Translation Result Modal */}
         {translationResult && (
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000002, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
-              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19}}>Translation Result</h4>
-              <div style={{fontSize: 16, marginBottom: 16}}>{translationResult}</div>
-              <button style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={()=>setTranslationResult("")}>Close</button>
+            <div style={{background: theme === 'dark' ? '#2d2d2d' : theme === 'sepia' ? '#f4ecd8' : '#fff', borderRadius: 14, padding: 28, minWidth: 340, boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
+              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Translation Result</h4>
+              <div style={{fontSize: 16, marginBottom: 16, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>{translationResult}</div>
+                             <button style={{...currentBtnStyle, background: "#eee", color: "#333", fontWeight: 500}} onClick={()=>setTranslationResult("")}>Close</button>
             </div>
           </div>
         )}
@@ -2084,8 +2301,8 @@ const handleSimplify = async () => {
         {/* Vocabulary History Modal */}
         {showVocabHistory && (
           <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.18)", zIndex: 1000004, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <div style={{background: "#fff", borderRadius: 14, padding: 28, minWidth: 500, maxWidth: "80vw", maxHeight: "80vh", boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
-              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19, marginBottom: 16}}>Vocabulary History</h4>
+            <div style={{background: theme === 'dark' ? '#2d2d2d' : theme === 'sepia' ? '#f4ecd8' : '#fff', borderRadius: 14, padding: 28, minWidth: 500, maxWidth: "80vw", maxHeight: "80vh", boxShadow: "0 8px 32px rgba(0,0,0,0.18)"}}>
+              <h4 style={{marginTop: 0, fontWeight: 700, fontSize: 19, marginBottom: 16, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>Vocabulary History</h4>
               <div style={{
                 maxHeight: 400,
                 overflowY: 'auto',
@@ -2097,32 +2314,32 @@ const handleSimplify = async () => {
                 className="beacon-scrollable-content"
               >
                 {vocabularyHistory.length === 0 ? (
-                  <div style={{textAlign: 'center', color: '#666', padding: '20px'}}>
-                    No words saved yet. Click on vocabulary words to save them!
-                  </div>
+                                     <div style={{textAlign: 'center', color: theme === 'dark' ? '#b0b0b0' : theme === 'sepia' ? '#8b7355' : '#666', padding: '20px'}}>
+                     No words saved yet. Click on vocabulary words to save them!
+                   </div>
                 ) : (
                   vocabularyHistory.map((item, index) => (
-                    <div key={index} style={{
-                      border: '1px solid #e0e0e0',
-                      borderRadius: 8,
-                      padding: 16,
-                      marginBottom: 12,
-                      background: '#fafafa'
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: 8
-                      }}>
-                        <h5 style={{
-                          margin: 0,
-                          fontSize: 18,
-                          fontWeight: 600,
-                          color: '#1565c0'
-                        }}>
-                          {item.word}
-                        </h5>
+                                         <div key={index} style={{
+                       border: `1px solid ${theme === 'dark' ? '#444' : theme === 'sepia' ? '#d4c4a8' : '#e0e0e0'}`,
+                       borderRadius: 8,
+                       padding: 16,
+                       marginBottom: 12,
+                       background: theme === 'dark' ? '#444' : theme === 'sepia' ? '#e8dcc0' : '#fafafa'
+                     }}>
+                       <div style={{
+                         display: 'flex',
+                         justifyContent: 'space-between',
+                         alignItems: 'center',
+                         marginBottom: 8
+                       }}>
+                         <h5 style={{
+                           margin: 0,
+                           fontSize: 18,
+                           fontWeight: 600,
+                           color: theme === 'dark' ? '#60a5fa' : theme === 'sepia' ? '#8b4513' : '#1565c0'
+                         }}>
+                           {item.word}
+                         </h5>
                         <button
                           onClick={() => {
                             setVocabularyHistory(prev => prev.filter((_, i) => i !== index));
@@ -2146,62 +2363,62 @@ const handleSimplify = async () => {
                         </button>
                       </div>
                       
-                      {item.phonetic && (
-                        <div style={{color: '#666', fontSize: 14, marginBottom: 8}}>
-                          🔊 {item.phonetic}
-                        </div>
-                      )}
-                      
-                      {item.meanings.map((meaning, mIndex) => (
-                        <div key={mIndex} style={{marginBottom: 8}}>
-                          <span style={{
-                            background: '#e3f2fd',
-                            color: '#1565c0',
-                            padding: '2px 8px',
-                            borderRadius: 12,
-                            fontSize: 12,
-                            fontWeight: 500
-                          }}>
-                            {meaning.partOfSpeech}
-                          </span>
-                          <div style={{marginTop: 4, fontSize: 14}}>
-                            {meaning.definitions && meaning.definitions[0] && (
-                              <div>• {meaning.definitions[0].definition}</div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                      
-                      <div style={{
-                        fontSize: 12,
-                        color: '#999',
-                        marginTop: 8,
-                        fontStyle: 'italic'
-                      }}>
-                        Saved: {new Date(item.timestamp).toLocaleDateString()}
-                      </div>
+                                             {item.phonetic && (
+                         <div style={{color: theme === 'dark' ? '#b0b0b0' : theme === 'sepia' ? '#8b7355' : '#666', fontSize: 14, marginBottom: 8}}>
+                           🔊 {item.phonetic}
+                         </div>
+                       )}
+                       
+                       {item.meanings.map((meaning, mIndex) => (
+                         <div key={mIndex} style={{marginBottom: 8}}>
+                           <span style={{
+                             background: theme === 'dark' ? 'rgba(96, 165, 250, 0.2)' : theme === 'sepia' ? 'rgba(139, 69, 19, 0.2)' : '#e3f2fd',
+                             color: theme === 'dark' ? '#60a5fa' : theme === 'sepia' ? '#8b4513' : '#1565c0',
+                             padding: '2px 8px',
+                             borderRadius: 12,
+                             fontSize: 12,
+                             fontWeight: 500
+                           }}>
+                             {meaning.partOfSpeech}
+                           </span>
+                           <div style={{marginTop: 4, fontSize: 14, color: theme === 'dark' ? '#f5f6fa' : theme === 'sepia' ? '#5b4636' : '#232323'}}>
+                             {meaning.definitions && meaning.definitions[0] && (
+                               <div>• {meaning.definitions[0].definition}</div>
+                             )}
+                           </div>
+                         </div>
+                       ))}
+                       
+                       <div style={{
+                         fontSize: 12,
+                         color: theme === 'dark' ? '#b0b0b0' : theme === 'sepia' ? '#8b7355' : '#999',
+                         marginTop: 8,
+                         fontStyle: 'italic'
+                       }}>
+                         Saved: {new Date(item.timestamp).toLocaleDateString()}
+                       </div>
                     </div>
                   ))
                 )}
               </div>
               <div style={{display: 'flex', gap: 12}}>
-                <button 
-                  style={{...btnStyle, background: "#eee", color: "#333", fontWeight: 500, flex: 1}} 
-                  onClick={() => setShowVocabHistory(false)}
-                >
-                  Close
-                </button>
-                {vocabularyHistory.length > 0 && (
-                  <button 
-                    style={{...btnStyle, background: "#ffebee", color: "#c62828", fontWeight: 500, flex: 1}} 
-                    onClick={() => {
-                      setVocabularyHistory([]);
-                      setShowVocabHistory(false);
-                    }}
-                  >
-                    Clear All
-                  </button>
-                )}
+                                 <button 
+                   style={{...currentBtnStyle, background: "#eee", color: "#333", fontWeight: 500, flex: 1}} 
+                   onClick={() => setShowVocabHistory(false)}
+                 >
+                   Close
+                 </button>
+                 {vocabularyHistory.length > 0 && (
+                   <button 
+                     style={{...currentBtnStyle, background: "#ffebee", color: "#c62828", fontWeight: 500, flex: 1}} 
+                     onClick={() => {
+                       setVocabularyHistory([]);
+                       setShowVocabHistory(false);
+                     }}
+                   >
+                     Clear All
+                   </button>
+                 )}
               </div>
             </div>
           </div>
@@ -2211,25 +2428,59 @@ const handleSimplify = async () => {
   );
 }
 
-const btnStyle = {
-  padding: "13px 0",
-  border: "none",
-  borderRadius: "12px",
-  background: "#f5f5f5",
-  marginBottom: "0px",
-  fontSize: "15px",
-  fontWeight: 500,
-  cursor: "pointer",
-  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-  transition: "background 0.18s, color 0.18s, box-shadow 0.18s",
-  outline: "none",
-  width: "100%",
-  letterSpacing: 0.01,
-  marginTop: 0,
-  marginRight: 0,
-  marginLeft: 0,
-  marginBottom: 0,
-};
+// Theme-aware button style function
+function getBtnStyle(theme = 'default') {
+  const baseStyle = {
+    padding: "13px 0",
+    borderRadius: "12px",
+    marginBottom: "0px",
+    fontSize: "15px",
+    fontWeight: 500,
+    cursor: "pointer",
+    boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+    transition: "background 0.18s, color 0.18s, box-shadow 0.18s",
+    outline: "none",
+    width: "100%",
+    letterSpacing: 0.01,
+    marginTop: 0,
+    marginRight: 0,
+    marginLeft: 0,
+    marginBottom: 0,
+  };
+  
+  if (theme === 'dark') {
+    return {
+      ...baseStyle,
+      background: "#444",
+      color: "#f5f6fa",
+      border: "1px solid #666"
+    };
+  } else if (theme === 'sepia') {
+    return {
+      ...baseStyle,
+      background: "#e8dcc0",
+      color: "#5b4636",
+      border: "1px solid #d4c4a8"
+    };
+  } else if (theme === 'high-contrast') {
+    return {
+      ...baseStyle,
+      background: "#000",
+      color: "#fff",
+      border: "2px solid #000"
+    };
+  } else {
+    return {
+      ...baseStyle,
+      background: "#f5f5f5",
+      color: "#232323",
+      border: "none"
+    };
+  }
+}
+
+// Default button style for backward compatibility
+const btnStyle = getBtnStyle();
 
 createRoot(container).render(<OverlayMenu />);
 
